@@ -1,0 +1,38 @@
+Application_Type: 		Web, 			Mobile_Native,	Hybrid
+Mobile_Platform: 		iOS, 			Android, 		N/A
+Browser: 			Chrome, 		Firefox, 		Safari,		N/A
+Programming_Language: 	Java, 			JS, 			Python, 		Swift, 	C#
+
+Unit_Framework: 		TestNG, 		JUnit,			Mocha, 		Jest, 		Jasmine, 		PyTest, 		Unittest, 		Nose2,		N/A
+Web_Frameworks: 		Selenide, 		Serenity, 		WebdriverIO, 		Cypress, 	CodeceptJS, 		Puppeteer, 		Playwrite, 		Helium,	N/A
+Mobile_Frameworks: 		Appium, 		Espresso, 		XCUITest, 		Detox, 	Xamarin,		N/A
+
+Infrastructure: 		Selenium_Grid, 	Selenoid
+
+############################################################################################################################################################
+IF [Application_Type] 	in	{"Web", "Hybrid"} 			THEN	[Web_Frameworks]		<>	"N/A"		AND	[Browser] 			<> 	"N/A";
+IF [Application_Type] 	in	{"Mobile_Native", "Hybrid"}	THEN	[Mobile_Platform]		<>	"N/A"		AND	[Mobile_Frameworks]		<>	"N/A";
+IF [Application_Type] 	= 	"Web" 					THEN	[Mobile_Platform]		=	"N/A";
+IF [Application_Type] 	=	"Mobile_Native"			THEN	[Web_Frameworks]		=	"N/A"		AND	[Browser] 			= 	"N/A";
+
+
+
+IF [Mobile_Platform] 	<>	"iOS"					THEN 	[Programming_Language] 	<> 	"Swift"	AND	[Browser] 			<> 	"Safari" 	AND	[Mobile_Frameworks] 	<> 	"XCUITest";
+
+
+IF [Mobile_Frameworks] 	= 	"Xamarin" 				THEN 	[Programming_Language] 	= 	"C#";
+IF [Mobile_Frameworks] 	= 	"Appium" 				THEN 	[Programming_Language] 	in 	{"Java", "JS", "Python", "C#"};
+IF [Mobile_Frameworks] 	= 	"Espresso" 				THEN 	[Programming_Language] 	= 	"Java" 	AND 	[Mobile_Platform] = "Android";
+IF [Mobile_Frameworks] 	= 	"Detox" 				THEN 	[Programming_Language] 	= 	"JS";
+
+IF [Unit_Framework] 	in 	{"TestNG", "JUnit"}			THEN 	[Programming_Language] 	= 	"Java";
+IF [Unit_Framework] 	in 	{"Mocha", "Jest", "Jasmine"}	THEN 	[Programming_Language] 	= 	"JS";
+IF [Unit_Framework] 	in 	{"PyTest", "Unittest", "Nose2"} 	THEN 	[Programming_Language] 	= 	"Python";
+
+IF [Web_Frameworks]		in	{"Selenide", "Playwright"}									THEN 	[Programming_Language] 	= 	"Java";
+IF [Web_Frameworks]		in	{"Serenity", "Cypress", "Puppeteer", "CodeceptJS", "WebdriverIO", "Playwright"}	THEN 	[Programming_Language] 	= 	"JS";
+IF [Web_Frameworks]		in	{"Helium", "Playwright"}									THEN 	[Programming_Language] 	= 	"Python";
+
+
+
+IF [Infrastructure]		=	"Selenium_Grid"			THEN	[Mobile_Platform]		=	"N/A"		AND	[Browser] 			<> 	"N/A"		AND 	[Web_Frameworks]	<>	"N/A";
